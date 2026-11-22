@@ -1,0 +1,56 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:Describe*",
+				"ec2:StartInstances",
+				"ec2:StopInstances",
+				"ec2:RebootInstances",
+				"ec2:TerminateInstances",
+				"ec2:CreateTags"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "Statement2",
+			"Effect": "Allow",
+			"Action": "ec2:RunInstances",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"ec2:InstanceType": [
+						"t2.micro",
+						"t3.micro"
+					],
+					"aws:RequestedRegion": "us-east-1"
+				}
+			}
+		},
+		{
+			"Sid": "Statement3",
+			"Effect": "Allow",
+			"Action": [
+				"lambda:*",
+				"cloudshell:*",
+				"logs:DescribeLogGroups",
+				"logs:DescribeLogStreams",
+				"logs:GetLogEvents"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "Statement4",
+			"Effect": "Allow",
+			"Action": "iam:PassRole",
+			"Resource": "arn:aws:iam::436554263299:role/service-role/*",
+			"Condition": {
+				"StringEquals": {
+					"iam:PassedToService": "lambda.amazonaws.com"
+				}
+			}
+		}
+	]
+}
