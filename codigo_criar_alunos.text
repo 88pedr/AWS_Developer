@@ -1,0 +1,16 @@
+GRUPO="Alunos-Workshop"
+echo "Usuario,Senha,URL_Login" > credenciais_ifba.csv
+
+for i in $(seq -w 1 25); do
+  USER="exemplo${i}"
+  PASS="exemplo${i}" #o $ é um placeholder
+  
+  aws iam create-user --user-name "$USER" > /dev/null #tira as mensagens que geraria no terminal para deixar limpo o /dev/null
+  aws iam create-login-profile --user-name "$USER" --password "$PASS" --no-password-reset-required > /dev/null
+  aws iam add-user-to-group --user-name "$USER" --group-name "$GRUPO"
+  
+  echo "$USER,$PASS,https://(id da conta).signin.aws.amazon.com/console" >> credenciais_ifba.csv #o >> diferente do > q substitui os arquivo que estao no local o >> ele adicionar no csv
+  echo "Criado: $USER | Senha: $PASS"
+done
+
+echo " Concluído! Arquivo credenciais_ifba.csv gerado."
